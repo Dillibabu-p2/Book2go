@@ -55,5 +55,5 @@ function Register({ onRegisterSuccess, onLoginClick }) {
     </div>
   );
 }
-
+//comment
 export default Register;
