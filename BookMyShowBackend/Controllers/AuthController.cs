@@ -8,7 +8,11 @@ namespace BookMyShowBackend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private static List<User> Users = new List<User>();
+        private static List<User> Users = new List<User>
+        {
+            new() { Email = "admin@example.com" , Password = "admin123", Role = "admin" },
+            new() { Email = "user@example.com" , Password = "user123", Role = "user"}
+        };
 
         [HttpPost("register")]
         public IActionResult Register([FromBody] User user)
@@ -17,6 +21,12 @@ namespace BookMyShowBackend.Controllers
             {
                 return BadRequest("User already exists.");
             }
+
+            if (string.IsNullOrEmpty(user.Role))
+            {
+                user.Role = "user";
+            }
+
             Users.Add(user);
             return Ok("Registration successful");
         }
@@ -29,7 +39,7 @@ namespace BookMyShowBackend.Controllers
             {
                 return Unauthorized("Invalid credentials.");
             }
-            return Ok("Login successful");
+            return Ok(new { email = existingUser.Email, role = existingUser.Role });
 
         }
     }
@@ -38,5 +48,7 @@ namespace BookMyShowBackend.Controllers
     {
         public string? Email { get; set; }
         public string? Password { get; set; }
+
+        public string? Role { get; set; }
     }
 }

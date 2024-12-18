@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Movies({ userEmail, onBookTicket, onLogout }) {
+function Movies({ userEmail, role, onBookTicket, onLogout }) {
   const [moviesList, setMoviesList] = useState([]);
   const [newMovie, setNewMovie] = useState({ title: "", genre: "" });
   const [message, setMessage] = useState("");
@@ -94,11 +94,9 @@ function Movies({ userEmail, onBookTicket, onLogout }) {
     <div>
       <h1>Movies</h1>
       <p>Welcome, {userEmail}!</p>
-
       {/* Display success or error messages */}
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
-
       {/* Movies List */}
       {moviesList.length > 0 ? (
         <ul className="movie-list">
@@ -107,18 +105,20 @@ function Movies({ userEmail, onBookTicket, onLogout }) {
               <strong>
                 {movie.title} ({movie.genre})
               </strong>
-              <button
-                onClick={() => handleDeleteMovie(movie.id)}
-                style={{
-                  marginLeft: "10px",
-                  color: "white",
-                  backgroundColor: "red",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Delete
-              </button>
+              {role === "admin" && (
+                <button
+                  onClick={() => handleDeleteMovie(movie.id)}
+                  style={{
+                    marginLeft: "10px",
+                    color: "white",
+                    backgroundColor: "red",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  Delete
+                </button>
+              )}
               <button
                 onClick={() => onBookTicket(movie)}
                 style={{
@@ -137,29 +137,35 @@ function Movies({ userEmail, onBookTicket, onLogout }) {
       ) : (
         <p>No movies available. Add a movie to get started!</p>
       )}
-
       {/* Add New Movie Section */}
-      <h2>Add a New Movie</h2>
-      <div className="add-movie">
-        <input
-          type="text"
-          placeholder="Title"
-          value={newMovie.title}
-          onChange={(e) => setNewMovie({ ...newMovie, title: e.target.value })}
-          style={{ marginRight: "10px" }}
-        />
-        <input
-          type="text"
-          placeholder="Genre"
-          value={newMovie.genre}
-          onChange={(e) => setNewMovie({ ...newMovie, genre: e.target.value })}
-          style={{ marginRight: "10px" }}
-        />
-        <button onClick={handleAddMovie} style={{ cursor: "pointer" }}>
-          Add Movie
-        </button>
-      </div>
-
+      {role === "admin" && (
+        <div>
+          <h2>Add a New Movie</h2>
+          <div className="add-movie">
+            <input
+              type="text"
+              placeholder="Title"
+              value={newMovie.title}
+              onChange={(e) =>
+                setNewMovie({ ...newMovie, title: e.target.value })
+              }
+              style={{ marginRight: "10px" }}
+            />
+            <input
+              type="text"
+              placeholder="Genre"
+              value={newMovie.genre}
+              onChange={(e) =>
+                setNewMovie({ ...newMovie, genre: e.target.value })
+              }
+              style={{ marginRight: "10px" }}
+            />
+            <button onClick={handleAddMovie} style={{ cursor: "pointer" }}>
+              Add Movie
+            </button>
+          </div>
+        </div>
+      )}
       {/* Logout Button */}
       <div style={{ marginTop: "20px" }}>
         <button

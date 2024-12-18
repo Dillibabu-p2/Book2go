@@ -26,7 +26,7 @@ builder.WebHost.ConfigureKestrel(options =>
 var app = builder.Build();
 
 // Configure middleware
-app.UseCors();
+app.UseCors("AllowAllOrigins");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();

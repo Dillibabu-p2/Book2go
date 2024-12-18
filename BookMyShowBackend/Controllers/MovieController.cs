@@ -11,9 +11,9 @@ namespace BookMyShowBackend.Controllers
 
         private static List<Movie> Movies = new List<Movie>
         {
-            new Movie { Id =1, Title = "Avengers" , Genre = "Drama"},
-            new Movie { Id =2, Title = "Batman" , Genre = "Action"},
-            new Movie { Id=3, Title= "Lucy", Genre = "Drama"},
+            new () { Id =1, Title = "Avengers" , Genre = "Drama"},
+            new () { Id =2, Title = "Batman" , Genre = "Action"},
+            new () { Id=3, Title= "Lucy", Genre = "Drama"},
         };
 
 

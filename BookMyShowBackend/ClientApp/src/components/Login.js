@@ -12,12 +12,14 @@ function Login({ onLoginSuccess, onRegisterClick }) {
       body: JSON.stringify({ email, password }),
     })
       .then((response) => {
-        if (response.ok) {
-          setMessage("Login Successful!");
-          onLoginSuccess(email);
-        } else {
+        if (!response.ok) {
           throw new Error("Invalid credentials");
         }
+        return response.json();
+      })
+      .then((data) => {
+        setMessage("Login Successful!");
+        onLoginSuccess(data.email, data.role);
       })
       .catch((error) => setMessage(error.message));
   };

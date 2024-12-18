@@ -11,6 +11,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false, // Tracks login status
+      role: null,
       currentComponent: "Login", // Default component (Login or Register)
       userEmail: "", // Tracks the logged-in user
       movies: ["Movie 1", "Movie 2", "Movie 3"],
@@ -19,16 +20,19 @@ export default class App extends Component {
   }
 
   handleLogin = (email) => {
+    let role = email === "admin@example.com" ? "admin" : "user";
     this.setState({
       isLoggedIn: true,
       currentComponent: "Movies", // Redirect to Movies page after login
       userEmail: email,
+      role,
     });
   };
 
   handleLogout = () => {
     this.setState({
       isLoggedIn: false,
+      role: null,
       currentComponent: "Login", // Redirect to Login page after logout
       userEmail: "",
     });
@@ -39,8 +43,14 @@ export default class App extends Component {
   };
 
   renderComponent() {
-    const { currentComponent, isLoggedIn, userEmail, movies, selectedMovie } =
-      this.state;
+    const {
+      currentComponent,
+      isLoggedIn,
+      role,
+      userEmail,
+      movies,
+      selectedMovie,
+    } = this.state;
 
     switch (currentComponent) {
       case "Register":
@@ -61,6 +71,7 @@ export default class App extends Component {
         return (
           <Movies
             userEmail={userEmail}
+            role={role}
             onLogout={this.handleLogout}
             onBookTicket={(movie) => this.handleNavigation("Booking", movie)}
           />
